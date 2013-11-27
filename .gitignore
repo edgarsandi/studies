@@ -1,0 +1,9 @@
+*.user
+*.o
+*.a
+ui_*.cpp
+moc_*.cpp
+rcc_*.cpp
+Makefile
+build*/
+*.swp
