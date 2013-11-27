@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/polymorphism.dir/main.cpp.o  -o polymorphism -rdynamic 
