@@ -4,6 +4,10 @@
 
 using namespace std;
 
+double operator() (double x) {
+    return 2 * x;
+}
+
 double f(double x) {
     return 2 * x;
 }
