@@ -19,5 +19,7 @@ double soma3(Classf2 f, int n, int m) {
     return result;
 }
 
-cout << soma3(Classf2(), 2, 5) << endl;
 
+int main() {
+    cout << soma3(Classf2(), 2, 5) << endl;
+}
