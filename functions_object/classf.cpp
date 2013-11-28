@@ -32,7 +32,7 @@ double raiz(double (*f)(double), double a, double b, double epsilon) {
 /********* Objetos de função ***************/
 class Classf {
 public:
-    void classf() {
+    Classf() {
     }
     double operator() (double x) {
         return 2 * x;
