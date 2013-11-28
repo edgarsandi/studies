@@ -5,7 +5,8 @@ CONFIG -= qt
 
 SOURCES += \
     classf.cpp \
-    classf2.cpp
+    classf2.cpp \
+    main.cpp
 
 TARGET = build/functions_object
 

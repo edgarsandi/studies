@@ -41,8 +41,7 @@ double raiz(double (*f)(double), double a, double b, double epsilon) {
     return metade;
 }
 
-Classf::Classf()
-{
+Classf::Classf() {
     cout << soma(f, 1, 5) << endl;
     cout << soma(sin, 3, 7) << endl;
     cout << raiz(f, 10, 20, 5) << endl;

@@ -5,6 +5,7 @@ class Classf
 {
 public:
     Classf();
+    double operator()(double x);
 };
 
 #endif // CLASSF_H
