@@ -8,3 +8,7 @@ SOURCES += \
     classf2.cpp
 
 TARGET = build/functions_object
+
+HEADERS += \
+    classf.h \
+    classf2.h

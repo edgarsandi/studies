@@ -1,9 +1,9 @@
 #include <iostream>
 #include <math.h>
+#include "classf.h"
 
 using namespace std;
 
-/******** Ponteiros para funcoes  ***********/
 double f(double x) {
     return 2 * x;
 }
@@ -14,6 +14,14 @@ double soma(double (*f)(double), int n, int m) {
         resultado += f(i);
     }
     return resultado;
+}
+
+double soma2(Classf f, int n, int m) {
+    double result = 0;
+    for (int i = n; i <= m; i++) {
+        result += f(i);
+    }
+    return result;
 }
 
 double raiz(double (*f)(double), double a, double b, double epsilon) {
@@ -29,24 +37,8 @@ double raiz(double (*f)(double), double a, double b, double epsilon) {
     return metade;
 }
 
-/********* Objetos de função ***************/
-class Classf {
-public:
-    Classf() {
-    }
-    double operator() (double x) {
-        return 2 * x;
-    }
-};
-double soma2(Classf f, int n, int m) {
-    double result = 0;
-    for (int i = n; i <= m; i++) {
-        result += f(i);
-    }
-    return result;
-}
-
-int main() {
+Classf::Classf()
+{
     cout << soma(f, 1, 5) << endl;
     cout << soma(sin, 3, 7) << endl;
     cout << raiz(f, 10, 20, 5) << endl;
@@ -55,3 +47,4 @@ int main() {
     Classf cf;
     cout << soma2(cf, 2, 5) << endl;
 }
+
