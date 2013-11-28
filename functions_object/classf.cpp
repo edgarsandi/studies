@@ -2,9 +2,8 @@
 #include <math.h>
 #include "classf.h"
 
-using namespace std;
 
-double operator() (double x) {
+double Classf::operator() (double x) {
     return 2 * x;
 }
 
@@ -40,14 +39,3 @@ double raiz(double (*f)(double), double a, double b, double epsilon) {
     }
     return metade;
 }
-
-Classf::Classf() {
-    cout << soma(f, 1, 5) << endl;
-    cout << soma(sin, 3, 7) << endl;
-    cout << raiz(f, 10, 20, 5) << endl;
-
-
-    Classf cf;
-    cout << soma2(cf, 2, 5) << endl;
-}
-

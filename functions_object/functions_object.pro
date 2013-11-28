@@ -11,5 +11,4 @@ SOURCES += \
 TARGET = build/functions_object
 
 HEADERS += \
-    classf.h \
-    classf2.h
+    classf.h
