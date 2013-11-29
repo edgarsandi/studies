@@ -5,13 +5,13 @@
 using namespace std;
 
 int main() {
-    cout << Classf::soma(Classf::f, 1, 5) << endl;
-    cout << Classf::soma(sin, 3, 7) << endl;
-    cout << Classf::raiz(Classf::f, 10, 20, 5) << endl;
-
     Classf cf;
-    cout << Classf::soma2(cf, 2, 5) << endl;
 
-    cout << Classf::soma3(Classf(), 2, 5) << endl;
+    cout << soma(f, 1, 5) << '\n';
+    cout << soma(sin, 3, 7) << '\n';
+    cout << raiz(f, 10, 20, 5) << '\n';
+
+    cout << soma2(cf, 2, 5) << '\n';
+
+    cout << soma3(Classf(), 2, 5) << '\n';
 }
-
