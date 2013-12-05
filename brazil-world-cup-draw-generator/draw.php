@@ -6,7 +6,7 @@
  * Will work with PHP 5.5.0 version or greater
  *
  * @author Oscar Merida <oscar@phparch.com>
- 8 @author Edgar Sandi <edgar.r.sando@gmail.com> -- UPDATED VALUES AND ADDED NEW FIFA RULE TO SORT FOOTBALL TEAMS
+ 8 @author Edgar Sandi <edgar.r.sandi@gmail.com> -- UPDATED VALUES AND ADDED NEW FIFA RULE TO SORT FOOTBALL TEAMS
   */
  
 // teams organized by pot, 8 in each.
