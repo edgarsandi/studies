@@ -1,0 +1,5 @@
+001+ 
+002+ Warning: syntax error, unexpected BOOL_TRUE in /home/edgarsandi/proj/studies/php_src_tests/bug68347.ini on line 7
+003+  in /home/edgarsandi/proj/studies/php_src_tests/php_bug_68347.php on line 17
+001- Warning: syntax error, unexpected BOOL_TRUE in %s on line %d
+005+ 

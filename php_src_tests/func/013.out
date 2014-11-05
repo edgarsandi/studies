@@ -1,0 +1,3 @@
+
+Warning: addcslashes(): Invalid '..'-range, '..'-range needs to be incrementing in /home/edgarsandi/proj/studies/php_src_tests/func/013.php on line 2
+\zoo['\.']

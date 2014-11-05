@@ -1,0 +1,2 @@
+Warning: syntax error, unexpected BOOL_TRUE in %s on line %d
+bool(false)
