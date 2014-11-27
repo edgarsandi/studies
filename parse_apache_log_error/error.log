@@ -1,0 +1,12 @@
+[Wed Nov 05 04:03:32 2014] [notice] Apache/2.2.23 (Unix) mod_ssl/2.2.23 OpenSSL/0.9.8e-fips-rhel5 PHP/5.3.20 configured -- resuming normal operations
+[Wed Nov 05 15:13:35 2014] [error] [client 10.20.38.50] client denied by server configuration: /srv/www/htdocs/live/capone.corp.folha.com.br/index.php
+[Wed Nov 05 15:13:36 2014] [error] [client 10.20.38.50] client denied by server configuration: /srv/www/htdocs/live/capone.corp.folha.com.br/index.php
+[Wed Nov 05 15:18:53 2014] [error] [client 10.20.38.50] client denied by server configuration: /srv/www/htdocs/live/capone.corp.folha.com.br/index.php
+[Wed Nov 05 15:18:54 2014] [error] [client 10.20.38.50] client denied by server configuration: /srv/www/htdocs/live/capone.corp.folha.com.br/index.php
+[Wed Nov 05 15:19:04 2014] [error] [client 10.20.38.50] client denied by server configuration: /srv/www/htdocs/live/capone.corp.folha.com.br/index.php
+[Wed Nov 05 15:19:05 2014] [error] [client 10.20.38.50] client denied by server configuration: /srv/www/htdocs/live/capone.corp.folha.com.br/index.php
+[Wed Nov 05 17:06:19 2014] [error] [client 10.21.44.49] PHP Notice:  Undefined index:  in /srv/www/htdocs/live/common/classes/capone/cardinality.class.php on line 537, referer: http://ness.corp.folha.com.br/autorizacao/novo
+[Wed Nov 05 17:06:19 2014] [error] [client 10.21.44.49] PHP Notice:  Undefined index:  in /srv/www/htdocs/live/common/classes/capone/cardinality.class.php on line 537, referer: http://ness.corp.folha.com.br/autorizacao/novo
+[Wed Nov 05 17:06:19 2014] [error] [client 10.21.44.49] PHP Warning:  array_merge() [<a href='function.array-merge'>function.array-merge</a>]: Argument #1 is not an array in /srv/www/htdocs/live/common/classes/capone/cardinality.class.php on line 537, referer: http://ness.corp.folha.com.br/autorizacao/novo
+[Wed Nov 05 17:06:19 2014] [error] [client 10.21.44.49] PHP Warning:  Invalid argument supplied for foreach() in /srv/www/htdocs/live/capone.corp.folha.com.br/scripts/authorization_controller.class.php on line 239, referer: http://ness.corp.folha.com.br/autorizacao/novo
+[Thu Nov 06 04:03:36 2014] [notice] SIGHUP received.  Attempting to restart

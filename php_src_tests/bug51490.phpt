@@ -6,4 +6,3 @@ Bug #51490	html_entity_encode() doesn't work with windows-1251
 ?>
 --EXPECT--
 &#xC7;&#xE0;&#xFF;&#xE2;&#xEA;&#xE0;
-
