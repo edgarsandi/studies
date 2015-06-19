@@ -20,4 +20,9 @@ namespace Padrao;
 <?php 
 	$obj = new \Padrao\User();
 	echo $obj->version . PHP_EOL;
-?>
+
+/*
+curl -X POST --data "version=1.0" http://10.30.12.115:8989/trait_autoloader.php
+curl -X POST --data "version=1.1" http://10.30.12.115:8989/trait_autoloader.php
+curl -X POST --data "version=1.2" http://10.30.12.115:8989/trait_autoloader.php
+curl -X POST --data "version=2.0" http://10.30.12.115:8989/trait_autoloader.php
