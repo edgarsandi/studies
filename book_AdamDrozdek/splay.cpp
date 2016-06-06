@@ -1,63 +1,92 @@
-<HTML>
-<HEAD>
-<TITLE>Data Structures in C++
-</TITLE>
-</HEAD>
-<BODY>
-<UL>
-<LI><A HREF="addPolynomials.cpp">addPolynomials.cpp</A>
-<LI><A HREF="AllFiles.zip">AllFiles.zip</A>
-<LI><A HREF="BankOne.cpp">BankOne.cpp</A>
-<LI><A HREF="collector.cpp">collector.cpp</A>
-<LI><A HREF="committees">committees</A>
-<LI><A HREF="database.cpp">database.cpp</A>
-<LI><A HREF="database.h">database.h</A>
-<LI><A HREF="dictionary">dictionary</A>
-<LI><A HREF="distinctRepresentatives.cpp">distinctRepresentatives.cpp</A>
-<LI><A HREF="Figure1-4.cpp">Figure1-4.cpp</A>
-<LI><A HREF="Figure3-25.cpp">Figure3-25.cpp</A>
-<LI><A HREF="Figure4-16.cpp">Figure4-16.cpp</A>
-<LI><A HREF="Figure4-18.cpp">Figure4-18.cpp</A>
-<LI><A HREF="Figure4-20.cpp">Figure4-20.cpp</A>
-<LI><A HREF="Figure7-35.cpp">Figure7-35.cpp</A>
-<LI><A HREF="Figure7-37.cpp">Figure7-37.cpp</A>
-<LI><A HREF="Figure9-18.cpp">Figure9-18.cpp</A>
-<LI><A HREF="genArrayQueue.h">genArrayQueue.h</A>
-<LI><A HREF="genBST.h">genBST.h</A>
-<LI><A HREF="genDLList.h">genDLList.h</A>
-<LI><A HREF="genListStack.h">genListStack.h</A>
-<LI><A HREF="genQueue.h">genQueue.h</A>
-<LI><A HREF="genSkipL.h">genSkipL.h</A>
-<LI><A HREF="genSplay.h">genSplay.h</A>
-<LI><A HREF="genStack.h">genStack.h</A>
-<LI><A HREF="genThreaded.h">genThreaded.h</A>
-<LI><A HREF="hash.cpp">hash.cpp</A>
-<LI><A HREF="heap.h">heap.h</A>
-<LI><A HREF="HuffmanCoding.h">HuffmanCoding.h</A>
-<LI><A HREF="HuffmanDecoder.cpp">HuffmanDecoder.cpp</A>
-<LI><A HREF="HuffmanEncoder.cpp">HuffmanEncoder.cpp</A>
-<LI><A HREF="interpreter.cpp">interpreter.cpp</A>
-<LI><A HREF="interpreter.h">interpreter.h</A>
-<LI><A HREF="intSLList.cpp">intSLList.cpp</A>
-<LI><A HREF="intSLList.h">intSLList.h</A>
-<LI><A HREF="library.cpp">library.cpp</A>
-<LI><A HREF="longestCommonSubstring.cpp">longestCommonSubstring.cpp</A>
-<LI><A HREF="maze.cpp">maze.cpp</A>
-<LI><A HREF="Milton">Milton</A>
-<LI><A HREF="Page6.cpp">Page6.cpp</A>
-<LI><A HREF="Page21.cpp">Page21.cpp</A>
-<LI><A HREF="personal.cpp">personal.cpp</A>
-<LI><A HREF="personal.h">personal.h</A>
-<LI><A HREF="queens.cpp">queens.cpp</A>
-<LI><A HREF="sorts.h">sorts.h</A>
-<LI><A HREF="spellCheck.cpp">spellCheck.cpp</A>
-<LI><A HREF="splay.cpp">splay.cpp</A>
-<LI><A HREF="student.cpp">student.cpp</A>
-<LI><A HREF="student.h">student.h</A>
-<LI><A HREF="trie.cpp">trie.cpp</A>
-<LI><A HREF="trie.h">trie.h</A>
-<LI><A HREF="useInterpreter.cpp">useInterpreter.cpp</A>
-<LI><A HREF="vonKoch.h">vonKoch.h</A>
-</UL>
-</BODY>
-</HTML>
+#include <iostream>
+#include <fstream>
+#include <cctype>
+#include <cstring>
+#include <cstdlib> // exit()
+#include "genSplay.h"
+
+using namespace std;
+
+class Word {
+public:
+    Word() {
+        freq = 1;
+    }
+    int operator== (const Word& ir) const {
+        return strcmp(word,ir.word) == 0;
+    }
+    int operator< (const Word& ir) const {
+        return strcmp(word,ir.word) < 0;
+    }
+private:
+    char *word;
+    int freq;
+    friend class WordSplay;
+};
+
+class WordSplay : public SplayTree<Word> {
+public:
+    WordSplay() {
+        differentWords = wordCnt = 0;
+    }
+    void run(ifstream&,char*);
+private:
+    int differentWords, // counter of different words in a text file;
+        wordCnt;        // counter of all words in the same file;
+    void visit(SplayingNode<Word>*);
+};
+
+void WordSplay::visit(SplayingNode<Word> *p) {
+    differentWords++;
+    wordCnt += p->info.freq;
+}
+
+void WordSplay::run(ifstream& fIn, char *fileName) {
+    char ch = ' ', i;
+    char s[100];
+    Word rec;
+    while (!fIn.eof()) {
+        while (1)
+            if (!fIn.eof() && !isalpha(ch)) // skip nonletters
+                 fIn.get(ch);
+            else break;
+        if (fIn.eof())       // spaces at the end of fIn;
+             break;
+        for (i = 0; !fIn.eof() && isalpha(ch); i++) {
+             s[i] = toupper(ch);
+             fIn.get(ch);
+        }
+        s[i] = '\0';
+        if (!(rec.word = new char[strlen(s)+1])) {
+             cerr << "No room for new words.\n";
+             exit(1);
+        }
+        strcpy(rec.word,s);
+        Word *p = search(rec);
+        if (p == 0)
+             insert(rec);
+        else p->freq++;
+    }
+    inorder();
+    cout << "\n\nFile " << fileName
+         << " contains " << wordCnt << " words among which "
+         << differentWords << " are different\n";
+}
+
+int main(int argc, char* argv[]) {
+    char fileName[80];
+    WordSplay splayTree;
+    if (argc != 2) {
+         cout << "Enter a file name: ";
+         cin  >> fileName;
+    }
+    else strcpy(fileName,argv[1]);
+    ifstream fIn(fileName);
+    if (fIn.fail()) {
+        cerr << "Cannot open " << fileName << endl;
+        return 1;
+    }
+    splayTree.run(fIn,fileName);
+    fIn.close();
+    return 0;
+}

@@ -1,63 +1,149 @@
-<HTML>
-<HEAD>
-<TITLE>Data Structures in C++
-</TITLE>
-</HEAD>
-<BODY>
-<UL>
-<LI><A HREF="addPolynomials.cpp">addPolynomials.cpp</A>
-<LI><A HREF="AllFiles.zip">AllFiles.zip</A>
-<LI><A HREF="BankOne.cpp">BankOne.cpp</A>
-<LI><A HREF="collector.cpp">collector.cpp</A>
-<LI><A HREF="committees">committees</A>
-<LI><A HREF="database.cpp">database.cpp</A>
-<LI><A HREF="database.h">database.h</A>
-<LI><A HREF="dictionary">dictionary</A>
-<LI><A HREF="distinctRepresentatives.cpp">distinctRepresentatives.cpp</A>
-<LI><A HREF="Figure1-4.cpp">Figure1-4.cpp</A>
-<LI><A HREF="Figure3-25.cpp">Figure3-25.cpp</A>
-<LI><A HREF="Figure4-16.cpp">Figure4-16.cpp</A>
-<LI><A HREF="Figure4-18.cpp">Figure4-18.cpp</A>
-<LI><A HREF="Figure4-20.cpp">Figure4-20.cpp</A>
-<LI><A HREF="Figure7-35.cpp">Figure7-35.cpp</A>
-<LI><A HREF="Figure7-37.cpp">Figure7-37.cpp</A>
-<LI><A HREF="Figure9-18.cpp">Figure9-18.cpp</A>
-<LI><A HREF="genArrayQueue.h">genArrayQueue.h</A>
-<LI><A HREF="genBST.h">genBST.h</A>
-<LI><A HREF="genDLList.h">genDLList.h</A>
-<LI><A HREF="genListStack.h">genListStack.h</A>
-<LI><A HREF="genQueue.h">genQueue.h</A>
-<LI><A HREF="genSkipL.h">genSkipL.h</A>
-<LI><A HREF="genSplay.h">genSplay.h</A>
-<LI><A HREF="genStack.h">genStack.h</A>
-<LI><A HREF="genThreaded.h">genThreaded.h</A>
-<LI><A HREF="hash.cpp">hash.cpp</A>
-<LI><A HREF="heap.h">heap.h</A>
-<LI><A HREF="HuffmanCoding.h">HuffmanCoding.h</A>
-<LI><A HREF="HuffmanDecoder.cpp">HuffmanDecoder.cpp</A>
-<LI><A HREF="HuffmanEncoder.cpp">HuffmanEncoder.cpp</A>
-<LI><A HREF="interpreter.cpp">interpreter.cpp</A>
-<LI><A HREF="interpreter.h">interpreter.h</A>
-<LI><A HREF="intSLList.cpp">intSLList.cpp</A>
-<LI><A HREF="intSLList.h">intSLList.h</A>
-<LI><A HREF="library.cpp">library.cpp</A>
-<LI><A HREF="longestCommonSubstring.cpp">longestCommonSubstring.cpp</A>
-<LI><A HREF="maze.cpp">maze.cpp</A>
-<LI><A HREF="Milton">Milton</A>
-<LI><A HREF="Page6.cpp">Page6.cpp</A>
-<LI><A HREF="Page21.cpp">Page21.cpp</A>
-<LI><A HREF="personal.cpp">personal.cpp</A>
-<LI><A HREF="personal.h">personal.h</A>
-<LI><A HREF="queens.cpp">queens.cpp</A>
-<LI><A HREF="sorts.h">sorts.h</A>
-<LI><A HREF="spellCheck.cpp">spellCheck.cpp</A>
-<LI><A HREF="splay.cpp">splay.cpp</A>
-<LI><A HREF="student.cpp">student.cpp</A>
-<LI><A HREF="student.h">student.h</A>
-<LI><A HREF="trie.cpp">trie.cpp</A>
-<LI><A HREF="trie.h">trie.h</A>
-<LI><A HREF="useInterpreter.cpp">useInterpreter.cpp</A>
-<LI><A HREF="vonKoch.h">vonKoch.h</A>
-</UL>
-</BODY>
-</HTML>
+//****************************  genSplay.h  ****************************
+//                     generic splaying tree class
+
+#ifndef SPLAYING
+#define SPLAYING
+
+template<class T> class SplayTree;
+
+template<class T>
+class SplayingNode {
+public:
+    SplayingNode() {
+        left = right = parent = 0;
+    }
+    SplayingNode(const T& el, SplayingNode *l = 0, SplayingNode *r = 0,
+                 SplayingNode *p = 0) {
+        info = el; left = l; right = r; parent = p;
+    }
+    T info;
+    SplayingNode *left, *right, *parent;
+};
+
+template<class T>
+class SplayTree {
+public:
+    SplayTree() {
+        root = 0;
+    }
+    void inorder() {
+        inorder(root);
+    }
+    T* search(const T&);
+    void insert(const T&);
+protected:
+    SplayingNode<T> *root;
+    void rotateR(SplayingNode<T>*);
+    void rotateL(SplayingNode<T>*);
+    void continueRotation(SplayingNode<T>* gr, SplayingNode<T>* par,
+                          SplayingNode<T>* ch, SplayingNode<T>* desc);
+    void semisplay(SplayingNode<T>*);
+    void inorder(SplayingNode<T>*);
+    void virtual visit(SplayingNode<T>*) {
+    }
+};
+
+
+template<class T>
+void SplayTree<T>::continueRotation(SplayingNode<T>* gr, SplayingNode<T>* par,
+                                    SplayingNode<T>* ch, SplayingNode<T>* desc) {
+    if (gr != 0) { // if p has a grandparent;
+         if (gr->right == ch->parent)
+              gr->right = ch;
+         else gr->left  = ch;
+    }
+    else root = ch;
+    if (desc != 0)
+        desc->parent = par;
+    par->parent = ch;
+    ch->parent = gr;
+}
+
+template<class T>
+void SplayTree<T>::rotateR(SplayingNode<T>* p) {
+    p->parent->left = p->right;
+    p->right = p->parent;
+    continueRotation(p->parent->parent,p->right,p,p->right->left);
+}
+
+template<class T>
+void SplayTree<T>::rotateL(SplayingNode<T>* p) {
+    p->parent->right = p->left;
+    p->left = p->parent;
+    continueRotation(p->parent->parent,p->left,p,p->left->right);
+}
+
+template<class T>
+void SplayTree<T>::semisplay(SplayingNode<T>* p) {
+    while (p != root) {
+        if (p->parent->parent == 0)    // if p's parent is the root;
+             if (p->parent->left == p)
+                  rotateR(p);
+             else rotateL(p);
+        else if (p->parent->left == p) // if p is a left child;
+             if (p->parent->parent->left == p->parent) {
+                  rotateR(p->parent);
+                  p = p->parent;
+             }
+             else {
+                  rotateR(p); // rotate p and its parent;
+                  rotateL(p); // rotate p and its new parent;
+             }
+        else                          // if p is a rigth child;
+             if (p->parent->parent->right == p->parent) {
+                  rotateL(p->parent);
+                  p = p->parent;
+             }
+             else {
+                  rotateL(p); // rotate p and its parent;
+                  rotateR(p); // rotate p and its new parent;
+             }
+        if (root == 0)              // update the root;
+            root = p;
+    }
+}
+
+template<class T>
+T* SplayTree<T>::search(const T& el) {
+    SplayingNode<T> *p = root;
+    while (p != 0)
+        if (p->info == el) {        // if el is in the tree,
+             semisplay(p);          // move it upward;
+             return &p->info;
+        }
+        else if (el < p->info)
+             p = p->left;
+        else p = p->right;
+    return 0;
+}
+
+template<class T>
+void SplayTree<T>::insert(const T& el) {
+    SplayingNode<T> *p = root, *prev = 0, *newNode;
+    while (p != 0) {  // find a place for inserting a new node;
+        prev = p;
+        if (el < p->info)
+             p = p->left;
+        else p = p->right;
+    }
+    if ((newNode = new SplayingNode<T>(el,0,0,prev)) == 0) {
+         cerr << "No room for new nodes\n";
+         exit(1);
+    }
+    if (root == 0)    // the tree is empty;
+         root = newNode;
+    else if (el < prev->info)
+         prev->left  = newNode;
+    else prev->right = newNode;
+}
+
+template<class T>
+void SplayTree<T>::inorder(SplayingNode<T> *p) {
+     if (p != 0) {
+         inorder(p->left);
+         visit(p);
+         inorder(p->right);
+     }
+}
+
+#endif

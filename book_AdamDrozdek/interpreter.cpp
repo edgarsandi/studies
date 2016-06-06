@@ -1,63 +1,121 @@
-<HTML>
-<HEAD>
-<TITLE>Data Structures in C++
-</TITLE>
-</HEAD>
-<BODY>
-<UL>
-<LI><A HREF="addPolynomials.cpp">addPolynomials.cpp</A>
-<LI><A HREF="AllFiles.zip">AllFiles.zip</A>
-<LI><A HREF="BankOne.cpp">BankOne.cpp</A>
-<LI><A HREF="collector.cpp">collector.cpp</A>
-<LI><A HREF="committees">committees</A>
-<LI><A HREF="database.cpp">database.cpp</A>
-<LI><A HREF="database.h">database.h</A>
-<LI><A HREF="dictionary">dictionary</A>
-<LI><A HREF="distinctRepresentatives.cpp">distinctRepresentatives.cpp</A>
-<LI><A HREF="Figure1-4.cpp">Figure1-4.cpp</A>
-<LI><A HREF="Figure3-25.cpp">Figure3-25.cpp</A>
-<LI><A HREF="Figure4-16.cpp">Figure4-16.cpp</A>
-<LI><A HREF="Figure4-18.cpp">Figure4-18.cpp</A>
-<LI><A HREF="Figure4-20.cpp">Figure4-20.cpp</A>
-<LI><A HREF="Figure7-35.cpp">Figure7-35.cpp</A>
-<LI><A HREF="Figure7-37.cpp">Figure7-37.cpp</A>
-<LI><A HREF="Figure9-18.cpp">Figure9-18.cpp</A>
-<LI><A HREF="genArrayQueue.h">genArrayQueue.h</A>
-<LI><A HREF="genBST.h">genBST.h</A>
-<LI><A HREF="genDLList.h">genDLList.h</A>
-<LI><A HREF="genListStack.h">genListStack.h</A>
-<LI><A HREF="genQueue.h">genQueue.h</A>
-<LI><A HREF="genSkipL.h">genSkipL.h</A>
-<LI><A HREF="genSplay.h">genSplay.h</A>
-<LI><A HREF="genStack.h">genStack.h</A>
-<LI><A HREF="genThreaded.h">genThreaded.h</A>
-<LI><A HREF="hash.cpp">hash.cpp</A>
-<LI><A HREF="heap.h">heap.h</A>
-<LI><A HREF="HuffmanCoding.h">HuffmanCoding.h</A>
-<LI><A HREF="HuffmanDecoder.cpp">HuffmanDecoder.cpp</A>
-<LI><A HREF="HuffmanEncoder.cpp">HuffmanEncoder.cpp</A>
-<LI><A HREF="interpreter.cpp">interpreter.cpp</A>
-<LI><A HREF="interpreter.h">interpreter.h</A>
-<LI><A HREF="intSLList.cpp">intSLList.cpp</A>
-<LI><A HREF="intSLList.h">intSLList.h</A>
-<LI><A HREF="library.cpp">library.cpp</A>
-<LI><A HREF="longestCommonSubstring.cpp">longestCommonSubstring.cpp</A>
-<LI><A HREF="maze.cpp">maze.cpp</A>
-<LI><A HREF="Milton">Milton</A>
-<LI><A HREF="Page6.cpp">Page6.cpp</A>
-<LI><A HREF="Page21.cpp">Page21.cpp</A>
-<LI><A HREF="personal.cpp">personal.cpp</A>
-<LI><A HREF="personal.h">personal.h</A>
-<LI><A HREF="queens.cpp">queens.cpp</A>
-<LI><A HREF="sorts.h">sorts.h</A>
-<LI><A HREF="spellCheck.cpp">spellCheck.cpp</A>
-<LI><A HREF="splay.cpp">splay.cpp</A>
-<LI><A HREF="student.cpp">student.cpp</A>
-<LI><A HREF="student.h">student.h</A>
-<LI><A HREF="trie.cpp">trie.cpp</A>
-<LI><A HREF="trie.h">trie.h</A>
-<LI><A HREF="useInterpreter.cpp">useInterpreter.cpp</A>
-<LI><A HREF="vonKoch.h">vonKoch.h</A>
-</UL>
-</BODY>
-</HTML>
+//**************************  interpreter.cpp   ***********************
+
+#include <cctype>
+#include "interpreter.h"
+
+double Statement::findValue(char *id) {
+    IdNode tmp(id);
+    list<IdNode>::iterator i = find(idList.begin(),idList.end(),tmp);
+    if (i != idList.end())
+         return i->value;
+    else issueError("Unknown variable");
+    return 0;  // this statement will never be reached;
+}
+
+void Statement::processNode(char* id ,double e) {
+    IdNode tmp(id,e);
+    list<IdNode>::iterator i = find(idList.begin(),idList.end(),tmp);
+    if (i != idList.end())
+         i->value = e;
+    else idList.push_front(tmp);
+}
+
+// readId() reads strings of letters and digits that start with
+// a letter, and stores them in array passed to it as an actual
+// parameter. 
+// Examples of identifiers are: var1, x, pqr123xyz, aName, etc.
+
+void Statement::readId(char *id) {
+    int i = 0;
+    if (isspace(ch))
+         cin >> ch;       // skip blanks;
+    if (isalpha(ch)) {
+         while (isalnum(ch)) {
+             id[i++] = ch;
+             cin.get(ch); // don't skip blanks;
+         }
+         id[i] = '\0';
+    }
+    else issueError("Identifier expected");
+}
+
+double Statement::factor() {
+    double var, minus = 1.0;
+    static char id[200];
+    cin >> ch;
+    while (ch == '+' || ch == '-') {      // take all '+'s and '-'s.
+        if (ch == '-')
+            minus *= -1.0;
+        cin >> ch;
+    }
+    if (isdigit(ch) || ch == '.') {      // Factor can be a number
+         cin.putback(ch);
+         cin >> var >> ch;
+    }
+    else if (ch == '(') {                  // or a parenthesized expression,
+         var = expression();
+         if (ch == ')')
+              cin >> ch;
+         else issueError("Right paren left out");
+    }
+    else {
+         readId(id);                          // or an identifier.
+         if (isspace(ch))
+             cin >> ch;
+         var = findValue(id);
+    }
+    return minus * var;
+}
+
+double Statement::term() {
+    double f = factor();
+    while (true) {
+        switch (ch) {
+            case '*' : f *= factor(); break;
+            case '/' : f /= factor(); break;
+            default  : return f;
+        }
+    }
+}
+
+double Statement::expression() {
+    double t = term();
+    while (true) {
+        switch (ch) {
+            case '+' : t += term(); break;
+            case '-' : t -= term(); break;
+            default  : return t;
+        }
+    }
+}
+
+void Statement::getStatement() {
+    char id[20], command[20];
+    double e;
+    cout << "Enter a statement: ";
+    cin  >> ch;
+    readId(id);
+    strcpy(command,id);
+    for (int i = 0; i < strlen(command); i++)
+	command[i] = toupper(command[i]);
+    if (strcmp(command,"STATUS") == 0)
+         cout << *this;
+    else if (strcmp(command,"PRINT") == 0) {
+         readId(id);
+         cout << id << " = " << findValue(id) << endl;
+    }
+    else if (strcmp(command,"END") == 0)
+         exit(0);
+    else {
+         if (isspace(ch))
+             cin >> ch;
+         if (ch == '=') {
+              e = expression();
+              if (ch != ';')
+                   issueError("There are some extras in the statement");
+              else processNode(id,e);
+         }
+         else issueError("'=' is missing");
+    }
+}
+
